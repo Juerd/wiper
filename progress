@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+use strict;
+$|++;
+my $screen = `screen -list`;
+my %nietklaar;
+@nietklaar{ $screen =~ /\d+\.(\w+)/g } = ();
+for my $dev (sort split " ", `ls /sys/block`) {
+    next if $dev eq "sda";
+    my $model = `cat /sys/block/$dev/device/model`;
+    chomp $model;
+    my $size = sprintf "%d", 512 * `cat /sys/block/$dev/size` / 1e9;
+    print "$dev: $model ($size GB)\n";
+    if (not exists $nietklaar{$dev}) {
+        print "== Done! ==\n";
+        next;
+    }
+    system "screen -r $dev -p0 -X hardcopy /tmp/$dev.hc";
+    my $line = `grep ETA /tmp/$dev.hc | tail -n1`;
+    print $line =~ /\S/ ? $line : "\n";
+}

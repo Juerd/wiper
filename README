@@ -1,0 +1,31 @@
+== WARNING ==
+
+This set of ugly hacks is DESIGNED TO DESTROY DATA. Do not run on any system
+that contains data that you wish to keep. In fact, just don't use these scripts
+at all. :-)
+
+== What does it do? ==
+
+Overwrite block devices, that were inserted after the boot process has
+finished, with nullbytes.
+
+== Installation ==
+
+Put it on a clean Debian system. We use a USB stick.
+
+cp rc.local /etc
+cp wiper progress /usr/local/bin
+cp 99-wiper.rules /etc/udev/rules.d
+
+== Usage ==
+
+Just insert disks. To watch the progress, run:
+
+    watch progress
+
+Cute, huh? Whenever the kernel messages mess up the screen, just do a ^C and
+restart watch.
+
+== License ==
+
+Any OSI.

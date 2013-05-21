@@ -1,0 +1,11 @@
+#!/usr/bin/perl -w
+open my $log, ">>/tmp/logje";
+print $log "$_ => $ENV{$_}\n" for keys %ENV;
+print $log "\n\n\n";
+-f "/tmp/booted" or die;
+my $dev = $ENV{DEVNAME};
+$dev =~ /\d/ and die;
+my $devshort = $dev;
+$devshort =~ s[.*/][];
+my $size = 512 * `cat /sys/$ENV{DEVPATH}/size`;
+exec 'screen', '-dmS', $devshort, 'sh', '-c', "pv -s $size </dev/zero >$dev";

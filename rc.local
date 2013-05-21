@@ -1,0 +1,4 @@
+#!/bin/sh
+
+touch /tmp/booted
+exit 0
